@@ -1,0 +1,901 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مطعم سيخ باشا | SIKH PASHA - منيو المشويات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0d0e;
+            --card-bg: #1a1718;
+            --primary-red: #8b0000;
+            --accent-red: #d32f2f;
+            --gold: #d4af37;
+            --gold-light: #f3e5ab;
+            --text-light: #f5f5f5;
+            --text-muted: #aaa;
+            --border-color: #332d2e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding-bottom: 90px;
+        }
+
+        header {
+            background: linear-gradient(180deg, rgba(0,0,0,0.95) 0%, rgba(15,13,14,0.85) 100%);
+            padding: 12px 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--gold);
+            backdrop-filter: blur(8px);
+        }
+
+        .logo h1 {
+            color: var(--gold);
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .logo p {
+            color: var(--text-light);
+            font-size: 0.8rem;
+            margin-top: -2px;
+        }
+
+        .hero {
+            position: relative;
+            height: 160px;
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(15,13,14,1)), url('https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .hero h2 {
+            font-size: 1.3rem;
+            color: var(--gold-light);
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-red), var(--accent-red));
+            color: white;
+            padding: 8px 22px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 1px solid var(--gold);
+            box-shadow: 0 4px 10px rgba(211, 47, 47, 0.4);
+            cursor: pointer;
+        }
+
+        /* تحسين الشريط العلوي للموبايل */
+        .categories-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 10px;
+            background-color: #141213;
+            position: sticky;
+            top: 61px;
+            z-index: 99;
+            border-bottom: 1px solid var(--border-color);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .categories-container::-webkit-scrollbar { display: none; }
+
+        .cat-btn {
+            display: inline-block;
+            background-color: var(--card-bg);
+            color: var(--text-light);
+            padding: 8px 16px;
+            margin-left: 6px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cat-btn.active {
+            background-color: var(--primary-red);
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 12px;
+        }
+
+        .section-title {
+            color: var(--gold);
+            font-size: 1.15rem;
+            margin: 15px 0 12px;
+            border-right: 4px solid var(--accent-red);
+            padding-right: 8px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        @media(min-width: 600px) {
+            .menu-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .food-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .food-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--gold-light);
+        }
+
+        .food-desc {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin: 4px 0 10px;
+            line-height: 1.35;
+        }
+
+        .food-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+        }
+
+        .food-price {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--gold);
+        }
+
+        .add-to-cart-btn {
+            padding: 8px 16px;
+            background-color: var(--primary-red);
+            color: white;
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        footer {
+            background: linear-gradient(180deg, rgba(15,13,14,0.9) 0%, rgba(0,0,0,0.98) 100%);
+            border-top: 1px solid var(--gold);
+            padding: 25px 15px 35px;
+            text-align: center;
+            margin-top: 30px;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .footer-content h3 {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .footer-content p {
+            color: var(--text-light);
+            font-size: 0.88rem;
+            line-height: 1.5;
+            max-width: 500px;
+            margin: 0 auto 10px;
+        }
+
+        .chef-signature {
+            color: var(--gold-light);
+            font-size: 1rem;
+            font-weight: 900;
+        }
+
+        .back-to-top {
+            display: inline-block;
+            margin-top: 12px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-decoration: none;
+            border: 1px solid var(--border-color);
+            padding: 5px 12px;
+            border-radius: 15px;
+        }
+
+        /* شريط السلة السفلي للموبايل */
+        .cart-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #141213;
+            border-top: 2px solid var(--gold);
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+        }
+
+        .cart-count { font-size: 0.8rem; color: var(--text-muted); display: block; }
+        .cart-total { font-size: 1.1rem; font-weight: 900; color: var(--gold); }
+
+        .open-cart-btn {
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .modal.active { display: flex; }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            border-top: 2px solid var(--gold);
+            padding: 18px 15px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.8rem;
+            line-height: 1;
+            padding: 0 5px;
+            cursor: pointer;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .qty-controls {
+            display: flex;
+            align-items: center;
+            background-color: #262223;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .qty-btn {
+            background: none;
+            border: none;
+            color: var(--gold);
+            width: 34px;
+            height: 34px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        .qty-val { padding: 0 8px; font-size: 0.95rem; font-weight: bold; }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.85rem; margin-bottom: 5px; color: var(--gold-light); }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #0f0d0e;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 16px; /* منع الزوم التلقائي في أجهزة آيفون */
+        }
+
+        .payment-methods { display: flex; gap: 8px; margin-top: 5px; }
+        .payment-option {
+            flex: 1;
+            background: #0f0d0e;
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+        .payment-option.active { border-color: var(--gold); background: var(--primary-red); }
+
+        .wallet-info {
+            display: none;
+            background: #262223;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            border: 1px solid var(--gold);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 12px;
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body id="top">
+
+    <header>
+        <div class="logo">
+            <h1>سيخ باشا</h1>
+            <p>SIKH PASHA • مشويات على أصولها 🔥</p>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h2>أصل المشويات المصرية على الفحم</h2>
+        <a href="#menu-start" class="btn-primary">تصفح المنيو</a>
+    </section>
+
+    <div class="categories-container" id="menu-start">
+        <button class="cat-btn active" data-category="all">الكل</button>
+        <button class="cat-btn" data-category="saway">صواني سيخ باشا</button>
+        <button class="cat-btn" data-category="grills">المشويات</button>
+        <button class="cat-btn" data-category="meals">الوجبات</button>
+        <button class="cat-btn" data-category="sandwiches">السندوتشات</button>
+        <button class="cat-btn" data-category="tawajen">طواجن فلاحي</button>
+        <button class="cat-btn" data-category="sides">الأصناف الجانبية</button>
+        <button class="cat-btn" data-category="salads">السلطات</button>
+    </div>
+
+    <div class="container">
+
+        <div class="menu-section" data-cat="saway">
+            <h3 class="section-title">✨ صواني سيخ باشا (مع أرز بسمتي + سلطة + عيش)</h3>
+            <div class="menu-grid">
+                <div class="food-card">
+                    <div>
+                        <div class="food-title">صنية التوفير</div>
+                        <div class="food-desc">نص فرخة مشوية + ربع كفتة + ربع سجق + ملوخية + أرز بسمتي + ممبار + سمبوسة</div>
+                    </div>
+                    <div class="food-bottom">
+                        <span class="food-price">650 جنيه</span>
+                        <button class="add-to-cart-btn" data-title="صنية التوفير" data-price="650">أضف</button>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div>
+                        <div class="food-title">صنية العيلة 1</div>
+                        <div class="food-desc">فرخة ونصف مشوية + نص كفتة + نص شيش طاووق + نص سجق + ممبار + سمبوسة</div>
+                    </div>
+                    <div class="food-bottom">
+                        <span class="food-price">1550 جنيه</span>
+                        <button class="add-to-cart-btn" data-title="صنية العيلة 1" data-price="1550">أضف</button>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div>
+                        <div class="food-title">صنية العيلة 2</div>
+                        <div class="food-desc">كيلو كباب مشكل + نص شيش طاووق + نص سجق + ممبار + سمبوسة</div>
+                    </div>
+                    <div class="food-bottom">
+                        <span class="food-price">1650 جنيه</span>
+                        <button class="add-to-cart-btn" data-title="صنية العيلة 2" data-price="1650">أضف</button>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div>
+                        <div class="food-title">صنية الأكيلة 1</div>
+                        <div class="food-desc">كيلو كباب وكفتة + كيلو شيش طاووق + سمبوسة + ممبار + أرز بسمتي باللوز والكاجو</div>
+                    </div>
+                    <div class="food-bottom">
+                        <span class="food-price">1600 جنيه</span>
+                        <button class="add-to-cart-btn" data-title="صنية الأكيلة 1" data-price="1600">أضف</button>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div>
+                        <div class="food-title">صنية الصحاب</div>
+                        <div class="food-desc">فرخة مشوية + ربع كفتة + ربع شيش طاووق + ربع سجق + ممبار + ربع لحمة ستيك + سمبوسة + كيلو أرز بسمتي باللوز والكاجو</div>
+                    </div>
+                    <div class="food-bottom">
+                        <span class="food-price">1300 جنيه</span>
+                        <button class="add-to-cart-btn" data-title="صنية الصحاب" data-price="1300">أضف</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section" data-cat="grills">
+            <h3 class="section-title">🥩 المشويات (تقدم مع سلطة وعيش)</h3>
+            <div class="menu-grid">
+                <div class="food-card">
+                    <div><div class="food-title">كفتة بلدي (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">550 جنيه</span><button class="add-to-cart-btn" data-title="كفتة بلدي (كيلو)" data-price="550">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">كفتة بلدي (ربع كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">145 جنيه</span><button class="add-to-cart-btn" data-title="كفتة بلدي (ربع كيلو)" data-price="145">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">كفتة ضاني (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">600 جنيه</span><button class="add-to-cart-btn" data-title="كفتة ضاني (كيلو)" data-price="600">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">كفتة ضاني (ربع كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">160 جنيه</span><button class="add-to-cart-btn" data-title="كفتة ضاني (ربع كيلو)" data-price="160">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">كباب مشكل (كيلو)</div><div class="food-desc">نص لحمه ستيك + نص كفته</div></div>
+                    <div class="food-bottom"><span class="food-price">720 جنيه</span><button class="add-to-cart-btn" data-title="كباب مشكل (كيلو)" data-price="720">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">كباب مشكل (ربع كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">220 جنيه</span><button class="add-to-cart-btn" data-title="كباب مشكل (ربع كيلو)" data-price="220">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">كباب صافي ضاني (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">950 جنيه</span><button class="add-to-cart-btn" data-title="كباب صافي ضاني (كيلو)" data-price="950">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">كباب مشكل ضاني (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">780 جنيه</span><button class="add-to-cart-btn" data-title="كباب مشكل ضاني (كيلو)" data-price="780">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">لحمة كباب فلتو (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">950 جنيه</span><button class="add-to-cart-btn" data-title="لحمة كباب فلتو (كيلو)" data-price="950">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">لحمة كباب فلتو (ربع كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">250 جنيه</span><button class="add-to-cart-btn" data-title="لحمة كباب فلتو (ربع كيلو)" data-price="250">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">طرب (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">680 جنيه</span><button class="add-to-cart-btn" data-title="طرب (كيلو)" data-price="680">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">طرب (ربع كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">175 جنيه</span><button class="add-to-cart-btn" data-title="طرب (ربع كيلو)" data-price="175">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">سجق بلدي (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">500 جنيه</span><button class="add-to-cart-btn" data-title="سجق بلدي (كيلو)" data-price="500">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">سجق بلدي (ربع كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">135 جنيه</span><button class="add-to-cart-btn" data-title="سجق بلدي (ربع كيلو)" data-price="135">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">ستيك مشوي (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">850 جنيه</span><button class="add-to-cart-btn" data-title="ستيك مشوي (كيلو)" data-price="850">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">موزة مشوية ضاني (مع أرز بالمكسرات)</div></div>
+                    <div class="food-bottom"><span class="food-price">400 جنيه</span><button class="add-to-cart-btn" data-title="موزة مشوية ضاني" data-price="400">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">ربع خروف كتف (مع كيلو أرز مكسرات)</div></div>
+                    <div class="food-bottom"><span class="food-price">1800 جنيه</span><button class="add-to-cart-btn" data-title="ربع خروف كتف" data-price="1800">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">فرخة مشوية</div></div>
+                    <div class="food-bottom"><span class="food-price">320 جنيه</span><button class="add-to-cart-btn" data-title="فرخة مشوية" data-price="320">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">فرخة شيش</div></div>
+                    <div class="food-bottom"><span class="food-price">320 جنيه</span><button class="add-to-cart-btn" data-title="فرخة شيش" data-price="320">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">شيش طاووق (كيلو)</div></div>
+                    <div class="food-bottom"><span class="food-price">480 جنيه</span><button class="add-to-cart-btn" data-title="شيش طاووق (كيلو)" data-price="480">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">ميكس جريل (كيلو)</div><div class="food-desc">ربع كفتة + ربع سجق + ربع شيش طاووق + ربع ستيك</div></div>
+                    <div class="food-bottom"><span class="food-price">600 جنيه</span><button class="add-to-cart-btn" data-title="ميكس جريل (كيلو)" data-price="600">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">فرد حمام محشي سوبر جامبو</div></div>
+                    <div class="food-bottom"><span class="food-price">160 جنيه</span><button class="add-to-cart-btn" data-title="حمام محشي سوبر جامبو" data-price="160">أضف</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section" data-cat="meals">
+            <h3 class="section-title">🍱 الوجبات (تقدم مع أرز شعرية وسلطة وعيش)</h3>
+            <div class="menu-grid">
+                <div class="food-card"><div><div class="food-title">وجبة ربع كفتة</div></div><div class="food-bottom"><span class="food-price">160 جنيه</span><button class="add-to-cart-btn" data-title="وجبة ربع كفتة" data-price="160">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">وجبة ربع سجق</div></div><div class="food-bottom"><span class="food-price">160 جنيه</span><button class="add-to-cart-btn" data-title="وجبة ربع سجق" data-price="160">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">وجبة ربع كفتة ضاني</div></div><div class="food-bottom"><span class="food-price">180 جنيه</span><button class="add-to-cart-btn" data-title="وجبة ربع كفتة ضاني" data-price="180">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">وجبة ثلث مشكل</div></div><div class="food-bottom"><span class="food-price">200 جنيه</span><button class="add-to-cart-btn" data-title="وجبة ثلث مشكل" data-price="200">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">وجبة ربع فرخة ورك</div></div><div class="food-bottom"><span class="food-price">100 جنيه</span><button class="add-to-cart-btn" data-title="وجبة ربع فرخة ورك" data-price="100">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">وجبة ربع فرخة صدر</div></div><div class="food-bottom"><span class="food-price">125 جنيه</span><button class="add-to-cart-btn" data-title="وجبة ربع فرخة صدر" data-price="125">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">وجبة نصف فرخة</div></div><div class="food-bottom"><span class="food-price">175 جنيه</span><button class="add-to-cart-btn" data-title="وجبة نصف فرخة" data-price="175">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">وجبة ربع شيش طاووق</div></div><div class="food-bottom"><span class="food-price">160 جنيه</span><button class="add-to-cart-btn" data-title="وجبة ربع شيش طاووق" data-price="160">أضف</button></div></div>
+                <div class="food-card">
+                    <div><div class="food-title">وجبة المعلم (1)</div><div class="food-desc">ربع فرخة + 2 صباع كفتة + قطعتين شيش طاووق</div></div>
+                    <div class="food-bottom"><span class="food-price">235 جنيه</span><button class="add-to-cart-btn" data-title="وجبة المعلم (1)" data-price="235">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">وجبة سيخ باشا (1)</div><div class="food-desc">ربع استيك مشوي + ثمن كفتة + ثمن شيش + ثمن سجق + أرز بسمتي بالمكسرات</div></div>
+                    <div class="food-bottom"><span class="food-price">455 جنيه</span><button class="add-to-cart-btn" data-title="وجبة سيخ باشا (1)" data-price="455">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">وجبة المدفع</div><div class="food-desc">ربع فرخة + 2 كفتة + 2 شيش + 2 ممبار + 2 سمبوسة + أرز بسمتي</div></div>
+                    <div class="food-bottom"><span class="food-price">295 جنيه</span><button class="add-to-cart-btn" data-title="وجبة المدفع" data-price="295">أضف</button></div>
+                </div>
+                <div class="food-card">
+                    <div><div class="food-title">وجبة الأكيل</div><div class="food-desc">200 جرام ستيك + 2 كفتة + 2 شيش + 2 ممبار + 2 سمبوسة + أرز بسمتي</div></div>
+                    <div class="food-bottom"><span class="food-price">390 جنيه</span><button class="add-to-cart-btn" data-title="وجبة الأكيل" data-price="390">أضف</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-section" data-cat="sandwiches">
+            <h3 class="section-title">🥪 السندوتشات (حشو بقدونس وبصل وسماق)</h3>
+            <div class="menu-grid">
+                <div class="food-card"><div><div class="food-title">سندوتش كفتة</div></div><div class="food-bottom"><span class="food-price">55 جنيه</span><button class="add-to-cart-btn" data-title="سندوتش كفتة" data-price="55">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">سندوتش سجق</div></div><div class="food-bottom"><span class="food-price">55 جنيه</span><button class="add-to-cart-btn" data-title="سندوتش سجق" data-price="55">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">سندوتش طرب</div></div><div class="food-bottom"><span class="food-price">85 جنيه</span><button class="add-to-cart-btn" data-title="سندوتش طرب" data-price="85">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">سندوتش شيش طاووق</div></div><div class="food-bottom"><span class="food-price">60 جنيه</span><button class="add-to-cart-btn" data-title="سندوتش شيش طاووق" data-price="60">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">رغيف حواوشي</div></div><div class="food-bottom"><span class="food-price">65 جنيه</span><button class="add-to-cart-btn" data-title="رغيف حواوشي" data-price="65">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">حواوشي سجق</div></div><div class="food-bottom"><span class="food-price">105 جنيه</span><button class="add-to-cart-btn" data-title="حواوشي سجق" data-price="105">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">حواوشي سجق وموتزاريلا</div></div><div class="food-bottom"><span class="food-price">145 جنيه</span><button class="add-to-cart-btn" data-title="حواوشي سجق وموتزاريلا" data-price="145">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">حواوشي طرب</div></div><div class="food-bottom"><span class="food-price">90 جنيه</span><button class="add-to-cart-btn" data-title="حواوشي طرب" data-price="90">أضف</button></div></div>
+            </div>
+        </div>
+
+        <div class="menu-section" data-cat="tawajen">
+            <h3 class="section-title">🍲 طواجن فلاحي</h3>
+            <div class="menu-grid">
+                <div class="food-card"><div><div class="food-title">طاجن ملوخية</div></div><div class="food-bottom"><span class="food-price">75 جنيه</span><button class="add-to-cart-btn" data-title="طاجن ملوخية" data-price="75">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">طبق ملوخية</div></div><div class="food-bottom"><span class="food-price">55 جنيه</span><button class="add-to-cart-btn" data-title="طبق ملوخية" data-price="55">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">طاجن بسلة</div></div><div class="food-bottom"><span class="food-price">75 جنيه</span><button class="add-to-cart-btn" data-title="طاجن بسلة" data-price="75">أضف</button></div></div>
+            </div>
+        </div>
+
+        <div class="menu-section" data-cat="sides">
+            <h3 class="section-title">🍚 الأصناف الجانبية</h3>
+            <div class="menu-grid">
+                <div class="food-card"><div><div class="food-title">أرز أبيض بالشعرية</div></div><div class="food-bottom"><span class="food-price">30 جنيه</span><button class="add-to-cart-btn" data-title="أرز أبيض بالشعرية" data-price="30">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">أرز شعرية بالكبدة</div></div><div class="food-bottom"><span class="food-price">55 جنيه</span><button class="add-to-cart-btn" data-title="أرز شعرية بالكبدة" data-price="55">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">أرز بسمتي سادة</div></div><div class="food-bottom"><span class="food-price">45 جنيه</span><button class="add-to-cart-btn" data-title="أرز بسمتي سادة" data-price="45">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">أرز بسمتي باللوز والكاجو</div></div><div class="food-bottom"><span class="food-price">85 جنيه</span><button class="add-to-cart-btn" data-title="أرز بسمتي باللوز والكاجو" data-price="85">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">طبق ممبار صغير</div></div><div class="food-bottom"><span class="food-price">60 جنيه</span><button class="add-to-cart-btn" data-title="طبق ممبار صغير" data-price="60">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">طبق ممبار كبير</div></div><div class="food-bottom"><span class="food-price">115 جنيه</span><button class="add-to-cart-btn" data-title="طبق ممبار كبير" data-price="115">أضف</button></div></div>
+            </div>
+        </div>
+
+        <div class="menu-section" data-cat="salads">
+            <h3 class="section-title">🥗 السلطات</h3>
+            <div class="menu-grid">
+                <div class="food-card"><div><div class="food-title">طحينة</div></div><div class="food-bottom"><span class="food-price">15 جنيه</span><button class="add-to-cart-btn" data-title="سلطة طحينة" data-price="15">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">بابا غنوج</div></div><div class="food-bottom"><span class="food-price">15 جنيه</span><button class="add-to-cart-btn" data-title="سلطة بابا غنوج" data-price="15">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">سلطة خضراء</div></div><div class="food-bottom"><span class="food-price">15 جنيه</span><button class="add-to-cart-btn" data-title="سلطة خضراء" data-price="15">أضف</button></div></div>
+                <div class="food-card"><div><div class="food-title">طرشي سيخ باشا حار</div></div><div class="food-bottom"><span class="food-price">15 جنيه</span><button class="add-to-cart-btn" data-title="طرشي سيخ باشا حار" data-price="15">أضف</button></div></div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3>بالهنا والشفا ❤️</h3>
+            <p>نُعدّ لكم مشوياتنا يومياً بكل حب وإتقان بأجود أنواع اللحوم الطازجة وعلى جمر الفحم الأصيل.</p>
+            <div class="chef-signature">✨ مع تحيات الشيف ياسر ✨</div>
+            <a href="#top" class="back-to-top">⬆️ العودة لأعلى الصفحة</a>
+        </div>
+    </footer>
+
+    <div class="cart-bar" id="cartBar">
+        <div class="cart-info">
+            <span class="cart-count" id="cartCount">0 أصناف</span>
+            <span class="cart-total" id="cartTotal">0 EGP</span>
+        </div>
+        <button class="open-cart-btn" id="openCartBtn">إتمام الطلب 🛒</button>
+    </div>
+
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>سلة الطلبات</h3>
+                <button class="close-btn" id="closeCartBtn">&times;</button>
+            </div>
+
+            <div id="cartStep1">
+                <div id="cartItemsContainer"></div>
+                <div style="margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 10px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: bold; color: var(--gold);">
+                        <span>الإجمالي:</span>
+                        <span id="grandTotal">0 جنيه</span>
+                    </div>
+                </div>
+                <button class="submit-btn" style="background: var(--primary-red); margin-top: 15px;" id="goToCheckoutBtn">متابعة الشراء ⬅️</button>
+            </div>
+
+            <div id="cartStep2" style="display: none;">
+                <h4 style="color: var(--gold); margin-bottom: 10px;">بيانات التوصيل</h4>
+                <div class="form-group">
+                    <label>الاسم بالكامل *</label>
+                    <input type="text" id="custName" placeholder="أدخل اسمك الكريم">
+                </div>
+                <div class="form-group">
+                    <label>رقم الهاتف *</label>
+                    <input type="tel" id="custPhone" placeholder="01XXXXXXXXX">
+                </div>
+                <div class="form-group">
+                    <label>العنوان بالتفصيل *</label>
+                    <input type="text" id="custAddress" placeholder="اسم الشارع - رقم العمارة - رقم الشقة">
+                </div>
+                <div class="form-group">
+                    <label>ملاحظات على الطلب</label>
+                    <textarea id="custNotes" rows="2" placeholder="مثال: بدون بصل، زيادة صوص..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>طريقة الدفع</label>
+                    <div class="payment-methods">
+                        <div class="payment-option active" id="payCash">كاش عند الاستلام</div>
+                        <div class="payment-option" id="payWallet">محفظة إلكترونية</div>
+                    </div>
+                </div>
+                <div class="wallet-info" id="walletInfo">
+                    <p>يرجى التحويل للرقم: <b style="color:var(--gold);">01066989850</b></p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top:3px;">وإرسال صورة التحويل عبر واتساب.</p>
+                </div>
+                <button class="submit-btn" id="sendWhatsappBtn">إرسال الطلب عبر WhatsApp 🔥</button>
+                <button style="width: 100%; background: none; border: none; color: var(--text-muted); margin-top: 10px; cursor: pointer;" id="backToCartBtn">العودة للسلة</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const WHATSAPP_NUMBER = "201066989850";
+            let cart = {};
+            let selectedPayment = 'كاش عند الاستلام';
+
+            // 1. التنقل بين الأقسام
+            const catBtns = document.querySelectorAll('.cat-btn');
+            const menuSections = document.querySelectorAll('.menu-section');
+
+            catBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    catBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const category = this.getAttribute('data-category');
+                    menuSections.forEach(sec => {
+                        if (category === 'all' || sec.getAttribute('data-cat') === category) {
+                            sec.style.display = 'block';
+                        } else {
+                            sec.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // 2. إضافة منتج للسلة
+            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const title = this.getAttribute('data-title');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    
+                    if (cart[title]) {
+                        cart[title].qty += 1;
+                    } else {
+                        cart[title] = { price: price, qty: 1 };
+                    }
+                    updateCartUI();
+                });
+            });
+
+            // 3. تحديث واجهة السلة
+            function updateCartUI() {
+                let totalItems = 0;
+                let subtotal = 0;
+                const container = document.getElementById('cartItemsContainer');
+                container.innerHTML = '';
+                const keys = Object.keys(cart);
+
+                if (keys.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 20px;">السلة فارغة حالياً</p>';
+                } else {
+                    keys.forEach(title => {
+                        const item = cart[title];
+                        const itemTotal = item.price * item.qty;
+                        totalItems += item.qty;
+                        subtotal += itemTotal;
+
+                        const itemDiv = document.createElement('div');
+                        itemDiv.className = 'cart-item';
+                        itemDiv.innerHTML = `
+                            <div>
+                                <h4 style="color:var(--gold-light); font-size:0.9rem;">${title}</h4>
+                                <p style="font-size:0.8rem; color:var(--text-muted);">${item.price} ج × ${item.qty} = <b style="color:var(--gold);">${itemTotal} ج</b></p>
+                            </div>
+                            <div class="qty-controls">
+                                <button class="qty-btn btn-minus" data-title="${title}">-</button>
+                                <span class="qty-val">${item.qty}</span>
+                                <button class="qty-btn btn-plus" data-title="${title}">+</button>
+                            </div>
+                        `;
+                        container.appendChild(itemDiv);
+                    });
+
+                    // أحداث التحكم بالكميات داخل السلة
+                    container.querySelectorAll('.btn-minus').forEach(b => {
+                        b.addEventListener('click', function() {
+                            const t = this.getAttribute('data-title');
+                            if (cart[t]) {
+                                cart[t].qty -= 1;
+                                if (cart[t].qty <= 0) delete cart[t];
+                            }
+                            updateCartUI();
+                        });
+                    });
+
+                    container.querySelectorAll('.btn-plus').forEach(b => {
+                        b.addEventListener('click', function() {
+                            const t = this.getAttribute('data-title');
+                            if (cart[t]) cart[t].qty += 1;
+                            updateCartUI();
+                        });
+                    });
+                }
+
+                document.getElementById('cartCount').innerText = `${totalItems} أصناف`;
+                document.getElementById('cartTotal').innerText = `${subtotal} EGP`;
+                document.getElementById('grandTotal').innerText = `${subtotal} جنيه`;
+            }
+
+            // 4. فتح وإغلاق النافذة
+            const modal = document.getElementById('cartModal');
+            document.getElementById('openCartBtn').addEventListener('click', () => modal.classList.add('active'));
+            document.getElementById('closeCartBtn').addEventListener('click', () => modal.classList.remove('active'));
+
+            // 5. التنقل لخطوات التوصيل
+            document.getElementById('goToCheckoutBtn').addEventListener('click', function() {
+                if (Object.keys(cart).length === 0) {
+                    alert('السلة فارغة!');
+                    return;
+                }
+                document.getElementById('cartStep1').style.display = 'none';
+                document.getElementById('cartStep2').style.display = 'block';
+            });
+
+            document.getElementById('backToCartBtn').addEventListener('click', function() {
+                document.getElementById('cartStep2').style.display = 'none';
+                document.getElementById('cartStep1').style.display = 'block';
+            });
+
+            // 6. طرق الدفع
+            const payCash = document.getElementById('payCash');
+            const payWallet = document.getElementById('payWallet');
+            const walletInfo = document.getElementById('walletInfo');
+
+            payCash.addEventListener('click', function() {
+                selectedPayment = 'كاش عند الاستلام';
+                payCash.classList.add('active');
+                payWallet.classList.remove('active');
+                walletInfo.style.display = 'none';
+            });
+
+            payWallet.addEventListener('click', function() {
+                selectedPayment = 'محفظة إلكترونية';
+                payWallet.classList.add('active');
+                payCash.classList.remove('active');
+                walletInfo.style.display = 'block';
+            });
+
+            // 7. إرسال الطلب للواتساب
+            document.getElementById('sendWhatsappBtn').addEventListener('click', function() {
+                const name = document.getElementById('custName').value.trim();
+                const phone = document.getElementById('custPhone').value.trim();
+                const address = document.getElementById('custAddress').value.trim();
+                const notes = document.getElementById('custNotes').value.trim() || 'لا يوجد';
+
+                if (!name || !phone || !address) {
+                    alert('يرجى ملء كافة البيانات المطلوبة (الاسم، الهاتف، العنوان)');
+                    return;
+                }
+
+                let subtotal = 0;
+                let itemsText = '';
+                Object.keys(cart).forEach(title => {
+                    const item = cart[title];
+                    const itemTotal = item.price * item.qty;
+                    subtotal += itemTotal;
+                    itemsText += `• ${item.qty} × ${title} = ${itemTotal} جنيه\n`;
+                });
+
+                let msg = `🔥 *طلب جديد - سيخ باشا* 🔥\n\n`;
+                msg += `👤 *الاسم:* ${name}\n📱 *الهاتف:* ${phone}\n📍 *العنوان:* ${address}\n\n`;
+                msg += `🍖 *الأصناف المطلوبة:*\n${itemsText}\n`;
+                msg += `💰 *إجمالي الطلب:* ${subtotal} جنيه\n`;
+                msg += `💳 *طريقة الدفع:* ${selectedPayment}\n`;
+                msg += `📝 *ملاحظات:* ${notes}\n\nيرجى تأكيد الاستلام والتوصيل.`;
+
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>
